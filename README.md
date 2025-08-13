@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfólio do Artista
 
-## Getting Started
+Um site de portfólio profissional para designers e artistas, construído com Next.js, TailwindCSS e Supabase.
 
-First, run the development server:
+## 🚀 Tecnologias
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Frontend:** Next.js 15 + TypeScript
+- **Styling:** TailwindCSS + Shadcn/ui
+- **Backend:** Supabase (Database + Storage)
+- **Autenticação:** Magic Link via email
+- **Deploy:** Vercel
+
+## 📁 Estrutura do Projeto
+
+```
+artist-portfolio/
+├── app/                    # App Router (Next.js 13+)
+│   ├── admin/             # Área administrativa
+│   ├── gallery/           # Galeria de trabalhos
+│   ├── globals.css        # Estilos globais
+│   ├── layout.tsx         # Layout principal
+│   └── page.tsx           # Página inicial
+├── components/            # Componentes React
+│   ├── layout/           # Componentes de layout
+│   └── ui/               # Componentes Shadcn/ui
+├── lib/                  # Utilitários e configurações
+│   ├── auth/             # Configurações de autenticação
+│   ├── supabase/         # Configurações do Supabase
+│   └── utils.ts          # Utilitários gerais
+├── types/                # Tipos TypeScript
+└── public/               # Arquivos estáticos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Funcionalidades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### ✅ Implementado
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [x] Setup do Next.js com TypeScript
+- [x] Configuração do TailwindCSS
+- [x] Shadcn/ui configurado
+- [x] Layout responsivo (Header, Footer)
+- [x] Estrutura de pastas organizada
+- [x] Tipos TypeScript definidos
 
-## Learn More
+### 🚧 Em Desenvolvimento
 
-To learn more about Next.js, take a look at the following resources:
+- [ ] Configuração do Supabase
+- [ ] Sistema de autenticação (Magic Link)
+- [ ] Área administrativa protegida
+- [ ] CRUD de trabalhos
+- [ ] Galeria de trabalhos
+- [ ] Upload de imagens
+- [ ] Sistema de categorias
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Como Executar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone o repositório:**
 
-## Deploy on Vercel
+   ```bash
+   git clone [url-do-repositorio]
+   cd artist-portfolio
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Instale as dependências:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente:**
+
+   ```bash
+   cp env.example .env.local
+   # Edite o arquivo .env.local com suas configurações
+   ```
+
+4. **Execute o projeto:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Acesse:** http://localhost:3000
+
+## 📝 Próximos Passos
+
+1. **Configurar Supabase:**
+
+   - Criar projeto no Supabase
+   - Configurar banco de dados
+   - Configurar autenticação
+
+2. **Implementar autenticação:**
+
+   - Magic Link via email
+   - Proteção de rotas admin
+
+3. **Desenvolver CRUD:**
+
+   - Criar, editar, deletar trabalhos
+   - Upload de imagens
+   - Sistema de categorias
+
+4. **Criar galeria:**
+   - Grid responsivo de trabalhos
+   - Filtros por categoria
+   - Modal de visualização
+
+## 🎨 Design System
+
+O projeto utiliza o Shadcn/ui com as seguintes características:
+
+- **Tema:** Claro/escuro
+- **Cores:** Sistema de cores HSL
+- **Tipografia:** Geist Sans
+- **Componentes:** Button, Card, etc.
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
