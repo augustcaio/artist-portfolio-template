@@ -598,21 +598,22 @@ export default function EditPostPage() {
 
             {/* Botões de Ação */}
             <div className="pt-6 mt-6 border-t border-[#232323]/20">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                type="submit"
-                className="flex-1 sm:flex-none border-2 border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-[#fffce3] px-6 py-3 font-medium transition-colors"
-              >
-                Salvar Alterações
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDelete}
-                className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700 font-medium px-6 py-3 transition-colors"
-              >
-                Deletar Postagem
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  type="submit"
+                  className="flex-1 sm:flex-none border-2 border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-[#fffce3] px-6 py-3 font-medium transition-colors"
+                >
+                  Salvar Alterações
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleDelete}
+                  className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700 font-medium px-6 py-3 transition-colors"
+                >
+                  Deletar Postagem
+                </Button>
+              </div>
             </div>
           </div>
         </form>
