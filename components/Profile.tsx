@@ -49,9 +49,9 @@ export function Profile() {
           {/* Descrição */}
           <AnimatedSection delay={0.8} direction="up">
             <p className="text-lg text-[#232323] max-w-2xl mx-auto mb-8 leading-relaxed">
-              Transformando ideias em experiências visuais únicas. Especializada
-              em design gráfico, identidade visual e ilustração. Criando
-              conexões através da arte e do design.
+              Transformo ideias em experiências visuais memoráveis, unindo
+              criatividade e estratégia. Especializada em design gráfico,
+              identidade visual e ilustração.
             </p>
           </AnimatedSection>
 
