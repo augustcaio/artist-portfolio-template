@@ -144,10 +144,10 @@ export default function AdminPage() {
               Faça login para ver o conteúdo.
             </p>
             <button
-              onClick={() => (window.location.href = "/")}
+              onClick={() => (window.location.href = "/login")}
               className="border-2 border-[#232323] text-[#232323] px-4 py-2 rounded-lg hover:bg-[#232323] hover:text-[#fffce3] transition-colors"
             >
-              Ir para Início
+              Ir para Login
             </button>
           </div>
         ) : (

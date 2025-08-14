@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { createClientBrowser } from "@/lib/supabase-auth";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,11 +27,22 @@ export default function LoginPage() {
       });
       if (error) throw error;
       if (!data.session) throw new Error("Falha ao iniciar sessão");
+
+      console.log("Session established:", {
+        user: data.session.user?.email,
+        expires: data.session.expires_at,
+      });
+
       setMessage("Login realizado com sucesso.");
 
       // Redirecionar imediatamente após login bem-sucedido
       console.log("Login successful, redirecting to /admin");
+
+      // Redirecionar imediatamente após login bem-sucedido
+      console.log("Executing redirect to /admin");
+      console.log("Current URL before redirect:", window.location.href);
       window.location.href = "/admin";
+      console.log("Redirect command executed");
     } catch (err: any) {
       setError(err?.message || "Erro ao entrar");
     } finally {

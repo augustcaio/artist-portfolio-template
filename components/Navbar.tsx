@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -17,6 +18,7 @@ import { Label } from "./ui/label";
 import { createClientBrowser } from "@/lib/supabase-auth";
 
 export function Navbar() {
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -86,7 +88,7 @@ export function Navbar() {
 
     if (session) {
       // Se estiver logado, redirecionar para a dashboard
-      window.location.href = "/admin";
+      router.push("/admin");
     } else {
       // Se não estiver logado, abrir o modal
       setIsLoginOpen(true);
@@ -105,11 +107,20 @@ export function Navbar() {
       });
       if (error) throw error;
       if (!data.session) throw new Error("Falha ao iniciar sessão");
+
+      console.log("Navbar - Session established:", {
+        user: data.session.user?.email,
+        expires: data.session.expires_at,
+      });
+
       setLoginMsg("Login realizado com sucesso.");
       setIsLoginOpen(false);
 
       // Redirecionar imediatamente após login bem-sucedido
       console.log("Navbar - Login successful, redirecting to /admin");
+
+      // Redirecionar imediatamente após login bem-sucedido
+      console.log("Navbar - Executing redirect to /admin");
       window.location.href = "/admin";
     } catch (err: any) {
       setLoginError(err?.message || "Erro ao entrar");
