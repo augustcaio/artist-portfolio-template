@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { createClientBrowser } from "@/lib/supabase-auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const supabase = createClientBrowser();
-  const router = useRouter();
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(true);
   const [loadingDashboard, setLoadingDashboard] = useState<boolean>(false);
@@ -70,9 +68,14 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
+    if (!isLogged && !checking) {
+      // Se não está logado e não está verificando, mostrar mensagem
+      // O middleware já cuida do redirecionamento
+      return;
+    }
     if (!isLogged) return;
     loadDashboard();
-  }, [isLogged]);
+  }, [isLogged, checking]);
 
   async function loadDashboard() {
     setLoadingDashboard(true);
@@ -124,7 +127,7 @@ export default function AdminPage() {
 
   async function handleSignOut() {
     await supabase.auth.signOut();
-    router.push("/login");
+    window.location.href = "/";
   }
 
   return (
@@ -136,7 +139,17 @@ export default function AdminPage() {
         {checking ? (
           <p className="text-[#232323]">Carregando...</p>
         ) : !isLogged ? (
-          <p className="text-[#232323]">Faça login para ver o conteúdo.</p>
+          <div className="text-center">
+            <p className="text-[#232323] mb-4">
+              Faça login para ver o conteúdo.
+            </p>
+            <button
+              onClick={() => (window.location.href = "/")}
+              className="border-2 border-[#232323] text-[#232323] px-4 py-2 rounded-lg hover:bg-[#232323] hover:text-[#fffce3] transition-colors"
+            >
+              Ir para Início
+            </button>
+          </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
             {/* Cabeçalho do artista */}

@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { createClientBrowser } from "@/lib/supabase-auth";
 import { motion } from "framer-motion";
-import { SUPABASE_REDIRECT_URL } from "@/lib/config";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
@@ -18,19 +19,19 @@ export default function LoginPage() {
 
     try {
       const supabase = createClientBrowser();
-      const { error } = await supabase.auth.signInWithOtp({
-        email: "caioaugusto930@gmail.com",
-        options: {
-          emailRedirectTo: SUPABASE_REDIRECT_URL,
-          shouldCreateUser: true,
-        },
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
       if (error) throw error;
-      setMessage(
-        "Enviamos um link mágico para caioaugusto930@gmail.com. Verifique sua caixa de entrada."
-      );
+      if (!data.session) throw new Error("Falha ao iniciar sessão");
+      setMessage("Login realizado com sucesso.");
+
+      // Redirecionar imediatamente após login bem-sucedido
+      console.log("Login successful, redirecting to /admin");
+      window.location.href = "/admin";
     } catch (err: any) {
-      setError(err?.message || "Erro ao enviar link");
+      setError(err?.message || "Erro ao entrar");
     } finally {
       setLoading(false);
     }
@@ -44,17 +45,45 @@ export default function LoginPage() {
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-semibold text-[#232323]">Entrar</h1>
-          <p className="text-gray-600">Acesse com link mágico por email</p>
+          <p className="text-gray-600">Acesse com email e senha</p>
         </div>
         <form
           onSubmit={handleSignIn}
-          className="rounded-xl p-6 border-2 border-[#232323] bg-transparent"
+          className="rounded-xl p-6 border-2 border-[#232323] bg-transparent space-y-6"
         >
-          <div className="text-center mb-6">
-            <p className="text-sm text-[#232323] mb-4">
-              O link de acesso será enviado para{" "}
-              <strong>caioaugusto930@gmail.com</strong>
-            </p>
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-[#232323]"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              className="w-full rounded-md border border-[#232323] bg-transparent px-3 py-2 text-[#232323] focus:outline-none"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-[#232323]"
+            >
+              Senha
+            </label>
+            <input
+              id="password"
+              type="password"
+              className="w-full rounded-md border border-[#232323] bg-transparent px-3 py-2 text-[#232323] focus:outline-none"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
 
           {message && (
@@ -78,7 +107,7 @@ export default function LoginPage() {
           >
             <div className="absolute inset-0 bg-[#232323] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
             <span className="relative z-10">
-              {loading ? "Enviando..." : "Enviar link"}
+              {loading ? "Entrando..." : "Entrar"}
             </span>
           </motion.button>
         </form>

@@ -17,9 +17,11 @@ export function middleware(req: NextRequest) {
 
     // Verificar especificamente o cookie de sessão
     const sessionCookie = req.cookies.get("sb-access-token");
+    const refreshCookie = req.cookies.get("sb-refresh-token");
 
-    if (!hasSupabaseCookie || !sessionCookie) {
-      return NextResponse.redirect(new URL("/login", req.url));
+    // Se não há cookies do Supabase, redirecionar para página inicial
+    if (!hasSupabaseCookie || (!sessionCookie && !refreshCookie)) {
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
   return NextResponse.next();

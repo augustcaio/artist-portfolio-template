@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -16,14 +15,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { createClientBrowser } from "@/lib/supabase-auth";
-import { SUPABASE_REDIRECT_URL } from "@/lib/config";
 
 export function Navbar() {
-  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginMsg, setLoginMsg] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -88,32 +86,33 @@ export function Navbar() {
 
     if (session) {
       // Se estiver logado, redirecionar para a dashboard
-      router.push("/admin");
+      window.location.href = "/admin";
     } else {
       // Se não estiver logado, abrir o modal
       setIsLoginOpen(true);
     }
   }
 
-  async function handleSendMagicLink(e: React.FormEvent) {
+  async function handlePasswordSignIn(e: React.FormEvent) {
     e.preventDefault();
     setLoginLoading(true);
     setLoginMsg(null);
     setLoginError(null);
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: "caioaugusto930@gmail.com",
-        options: {
-          emailRedirectTo: SUPABASE_REDIRECT_URL,
-          shouldCreateUser: true,
-        },
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password: loginPassword,
       });
       if (error) throw error;
-      setLoginMsg(
-        "Link de acesso enviado com sucesso para caioaugusto930@gmail.com."
-      );
+      if (!data.session) throw new Error("Falha ao iniciar sessão");
+      setLoginMsg("Login realizado com sucesso.");
+      setIsLoginOpen(false);
+
+      // Redirecionar imediatamente após login bem-sucedido
+      console.log("Navbar - Login successful, redirecting to /admin");
+      window.location.href = "/admin";
     } catch (err: any) {
-      setLoginError(err?.message || "Erro ao enviar link de acesso");
+      setLoginError(err?.message || "Erro ao entrar");
     } finally {
       setLoginLoading(false);
     }
@@ -288,22 +287,38 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Modal de Login por Magic Link */}
+      {/* Modal de Login com Email e Senha */}
       <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
         <DialogContent className="max-w-md rounded-xl border-2 border-[#232323] bg-[#fffce3] text-[#232323] shadow-lg p-6">
           <DialogHeader className="mb-4">
             <DialogTitle className="text-2xl font-semibold text-[#232323]">
-              Entrar com email
+              Entrar
             </DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={handleSendMagicLink} className="space-y-6">
-            <div className="text-sm leading-relaxed text-[#232323]">
-              <p>
-                Enviaremos um link de acesso para{" "}
-                <strong>caioaugusto930@gmail.com</strong>. Clique no botão
-                abaixo e verifique sua caixa de entrada.
-              </p>
+          <form onSubmit={handlePasswordSignIn} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="********"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                required
+              />
             </div>
 
             {loginMsg && (
@@ -345,7 +360,7 @@ export function Navbar() {
                 disabled={loginLoading}
                 className="border-2 border-[#232323] text-[#232323] hover:bg-[#232323] hover:text-[#fffce3] transition-colors"
               >
-                {loginLoading ? "Enviando..." : "Enviar link"}
+                {loginLoading ? "Entrando..." : "Entrar"}
               </Button>
             </div>
           </form>
