@@ -1,4 +1,4 @@
-import { createClientBrowser } from "@/lib/supabase-auth";
+import { createClientServer } from "@/lib/supabase-server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -6,16 +6,26 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/admin";
 
+  console.log("Callback route called with:", { code: !!code, origin, next });
+
   if (code) {
-    const supabase = createClientBrowser();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    
-    if (!error) {
-      // Login bem-sucedido, redirecionar para a dashboard
-      return NextResponse.redirect(`${origin}${next}`);
+    try {
+      const supabase = createClientServer();
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+      console.log("Exchange result:", { error: error?.message });
+
+      if (!error) {
+        // Login bem-sucedido, redirecionar para a dashboard
+        console.log("Redirecting to:", `${origin}${next}`);
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+    } catch (err) {
+      console.error("Error in callback:", err);
     }
   }
 
   // Se houver erro ou não houver código, redirecionar para login
+  console.log("Redirecting to login");
   return NextResponse.redirect(`${origin}/login`);
 }

@@ -57,8 +57,20 @@ Para que o redirecionamento funcione corretamente, você precisa configurar as U
      http://localhost:3000/auth/callback
      ```
 
-5. **Salve as configurações**
+5. **Configure Email Templates (Opcional)**
+
+   - Em "Email Templates" > "Magic Link"
+   - Verifique se o template está configurado corretamente
+   - O link deve apontar para: `https://anagabrielasantos.vercel.app/auth/callback`
+
+6. **Salve as configurações**
    - Clique em "Save" para aplicar as mudanças
+
+### Verificação Importante:
+
+- Certifique-se de que as variáveis de ambiente estão configuradas na Vercel:
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## URLs Configuradas
 
