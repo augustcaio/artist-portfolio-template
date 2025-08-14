@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClientBrowser } from "@/lib/supabase-auth";
 import { motion } from "framer-motion";
+import { SUPABASE_REDIRECT_URL } from "@/lib/config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/admin`,
+          emailRedirectTo: SUPABASE_REDIRECT_URL,
           shouldCreateUser: true,
         },
       });

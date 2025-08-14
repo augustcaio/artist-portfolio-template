@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { createClientBrowser } from "@/lib/supabase-auth";
+import { SUPABASE_REDIRECT_URL } from "@/lib/config";
 
 export function Navbar() {
   const router = useRouter();
@@ -101,15 +102,15 @@ export function Navbar() {
     setLoginError(null);
     try {
       const { error } = await supabase.auth.signInWithOtp({
-        email: "santosssag@gmail.com",
+        email: "caioaugusto930@gmail.com",
         options: {
-          emailRedirectTo: `${window.location.origin}/admin`,
+          emailRedirectTo: SUPABASE_REDIRECT_URL,
           shouldCreateUser: true,
         },
       });
       if (error) throw error;
       setLoginMsg(
-        "Link de acesso enviado com sucesso para santosssag@gmail.com."
+        "Link de acesso enviado com sucesso para caioaugusto930@gmail.com."
       );
     } catch (err: any) {
       setLoginError(err?.message || "Erro ao enviar link de acesso");
@@ -300,8 +301,8 @@ export function Navbar() {
             <div className="text-sm leading-relaxed text-[#232323]">
               <p>
                 Enviaremos um link de acesso para{" "}
-                <strong>santosssag@gmail.com</strong>. Clique no botão abaixo e
-                verifique sua caixa de entrada.
+                <strong>caioaugusto930@gmail.com</strong>. Clique no botão
+                abaixo e verifique sua caixa de entrada.
               </p>
             </div>
 
