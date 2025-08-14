@@ -79,6 +79,13 @@ Para que o redirecionamento funcione corretamente, você precisa configurar as U
 
 ## Como Funciona
 
+1. **Usuário clica no botão** "Enviar link" na página de login
+2. **Email é enviado** para `caioaugusto930@gmail.com` com link para `/auth/callback`
+3. **Usuário clica no link** do email
+4. **Callback processa** o código e redireciona para `/admin?auth_code=...`
+5. **Página admin** processa o código e autentica o usuário
+6. **Usuário tem acesso** completo à dashboard
+
 - Em **desenvolvimento** (`npm run dev`): usa `localhost:3000/admin`
 - Em **produção** (Vercel): usa `https://anagabrielasantos.vercel.app/admin`
 

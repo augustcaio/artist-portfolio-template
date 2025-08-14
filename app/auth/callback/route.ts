@@ -1,4 +1,3 @@
-import { createClientServer } from "@/lib/supabase-server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -10,16 +9,11 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     try {
-      const supabase = createClientServer();
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
-
-      console.log("Exchange result:", { error: error?.message });
-
-      if (!error) {
-        // Login bem-sucedido, redirecionar para a dashboard
-        console.log("Redirecting to:", `${origin}${next}`);
-        return NextResponse.redirect(`${origin}${next}`);
-      }
+      // Redirecionar diretamente para a dashboard com o código
+      // O cliente browser-side irá processar a autenticação
+      const redirectUrl = `${origin}${next}?auth_code=${code}`;
+      console.log("Redirecting to:", redirectUrl);
+      return NextResponse.redirect(redirectUrl);
     } catch (err) {
       console.error("Error in callback:", err);
     }

@@ -28,17 +28,41 @@ export default function AdminPage() {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (mounted) setIsLogged(Boolean(data.session));
-      if (mounted) setChecking(false);
-      if (mounted) setUserEmail(data.session?.user?.email ?? null);
-    });
+
+    // Verificar se há um código de autenticação na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get("auth_code");
+
+    if (authCode) {
+      // Processar o código de autenticação
+      supabase.auth.exchangeCodeForSession(authCode).then(({ data, error }) => {
+        if (mounted) {
+          if (!error && data.session) {
+            setIsLogged(true);
+            setUserEmail(data.session.user?.email ?? null);
+          } else {
+            console.error("Auth error:", error);
+            setIsLogged(false);
+          }
+          setChecking(false);
+        }
+      });
+    } else {
+      // Verificar sessão existente
+      supabase.auth.getSession().then(({ data }) => {
+        if (mounted) setIsLogged(Boolean(data.session));
+        if (mounted) setChecking(false);
+        if (mounted) setUserEmail(data.session?.user?.email ?? null);
+      });
+    }
+
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (!mounted) return;
       setIsLogged(Boolean(session));
       setChecking(false);
       setUserEmail(session?.user?.email ?? null);
     });
+
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
