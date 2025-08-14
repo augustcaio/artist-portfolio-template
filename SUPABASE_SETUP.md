@@ -13,8 +13,8 @@ Criado um arquivo centralizado para gerenciar as URLs de redirecionamento:
 ```typescript
 export const SUPABASE_REDIRECT_URL =
   process.env.NODE_ENV === "production"
-    ? "https://anagabrielasantos.vercel.app/admin"
-    : "http://localhost:3000/admin";
+    ? "https://anagabrielasantos.vercel.app/auth/callback"
+    : "http://localhost:3000/auth/callback";
 ```
 
 ### 2. Página de Login (`app/(auth)/login/page.tsx`)
@@ -53,8 +53,8 @@ Para que o redirecionamento funcione corretamente, você precisa configurar as U
 
    - Em "Redirect URLs", adicione:
      ```
-     https://anagabrielasantos.vercel.app/admin
-     http://localhost:3000/admin
+     https://anagabrielasantos.vercel.app/auth/callback
+     http://localhost:3000/auth/callback
      ```
 
 5. **Salve as configurações**
@@ -62,8 +62,8 @@ Para que o redirecionamento funcione corretamente, você precisa configurar as U
 
 ## URLs Configuradas
 
-- **Produção**: `https://anagabrielasantos.vercel.app/admin`
-- **Desenvolvimento**: `http://localhost:3000/admin`
+- **Produção**: `https://anagabrielasantos.vercel.app/auth/callback`
+- **Desenvolvimento**: `http://localhost:3000/auth/callback`
 
 ## Como Funciona
 
